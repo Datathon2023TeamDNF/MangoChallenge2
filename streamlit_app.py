@@ -9,11 +9,12 @@ import subprocess
 Select an image you want to generate a new outfit from.
 """
 
-
 def reroll():
     nrawdf = pd.read_csv('processed_data/clean_product_data_with_filenames.csv')
-    nrawdf = nrawdf[['cod_modelo_color', 'des_filename']]
-    nprdf = nrawdf.sample(n=10)
+    nprdf = nrawdf
+    nprdf = nprdf.loc[nprdf['des_product_family'] != 'Intimate']
+    nprdf = nrawdf[['cod_modelo_color', 'des_filename']]
+    nprdf = nprdf.sample(n=10)
     st.session_state['rawdf'] = nrawdf
     st.session_state['selection'] = nprdf
 
@@ -43,11 +44,11 @@ chosen_idx = image_select(
 if st.button('Get different products'):
     reroll()
     st.rerun()
-if st.button('Generate fresh outfit'):
+if st.button('Generate new outfit'):
     fileq = open("request.txt", 'w')
     fileq.write(prdf.iloc[chosen_idx]['cod_modelo_color'])
     fileq.close()
-    #subprocess.run(["gen"])
+    subprocess.run(["./gen"])
     filea = open("answer.txt", 'r')
     lines = filea.readlines()
     filea.close()
