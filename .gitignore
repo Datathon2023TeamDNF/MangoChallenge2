@@ -5,3 +5,5 @@ datathon.zip
 request.txt
 answer.txt
 gen
+model/graph.data
+model/clean_graph_final.data
